@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graf-deploy
+  labels:
+    app: grafana
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+       app: grafana
+  template:
+    metadata:
+      name: graf-deploy
+      labels:
+        app: grafana
+    spec:
+      volumes:
+        - name: graf-pv
+          persistentVolumeClaim:
+            claimName: graf-pvc
+      containers:
+        - name: grafana
+          image: chatpc99/mygraf:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+      restartPolicy: Always
+  
